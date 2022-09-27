@@ -1,6 +1,6 @@
 # Getting started with REST API testing with Serenity and Cucumber 6
 
-This is a simple starter project for Serenity with Cucumber 6 and RestAssured
+This is a simple Reqres project for Serenity with Cucumber 6 and RestAssured
 
 ## Want to learn more?
 For more information about Serenity BDD, you can read the [**Serenity BDD Book**](https://serenity-bdd.github.io/theserenitybook/latest/index.html), the official online Serenity documentation source. Other sources include:
