@@ -111,7 +111,6 @@ Feature: Request to API Reqres.in
     Given Get list user with delay <parameter>
     When Send request get single user with delay
     Then API should return response status code <status code>
-    And take time <parameter>
   Examples:
     |parameter|status code|
     |3        |200        |
