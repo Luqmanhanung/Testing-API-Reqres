@@ -206,6 +206,11 @@ public class ReqresStepDefs {
         SerenityRest.when()
                 .patch(ReqresAPI.PATCH_UPDATE_USER);
     }
+    @And("Patch Response body should contain name {string}")
+    public void patchResponseBodyShouldContainName(String name) {
+        SerenityRest.then()
+                .body(ReqresResponse.NAME,equalTo(name));
+    }
 
     @Given("Delete user with id {int}")
     public void deleteUserWithIdId(int id) {
@@ -223,4 +228,6 @@ public class ReqresStepDefs {
         SerenityRest.then()
                 .statusCode(statusCodeNoContent);
     }
+
+
 }

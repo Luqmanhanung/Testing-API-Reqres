@@ -141,7 +141,7 @@ Feature: Request to API Reqres.in
     Given Patch update user with id 1 and with valid json file
     When Send request patch update user
     Then API should return response 200 OK
-    And Response body should contain name "Justin Bieber" and job "Quality Assurance Engineer"
+    And Patch Response body should contain name "Justin Bieber"
 
   @Latihan @PositiveCase
   Scenario Outline: Delete user With valid id
