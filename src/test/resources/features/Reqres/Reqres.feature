@@ -51,9 +51,9 @@ Feature: Request to API Reqres.in
       |    |
 
   @Tugas @NegativeCase
-  Scenario: GET User not found
+  Scenario: GET list user not found
     Given Get list user with page 23
-    When Send request get single user
+    When Send request get list user
     Then API should return response 404 Not Found
 
   @Tugas @NegativeCase
