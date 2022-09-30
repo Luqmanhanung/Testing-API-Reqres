@@ -1,6 +1,6 @@
 Feature: Request to API Reqres.in
   @Tugas @PositiveCase
-  Scenario Outline: GET list user with valid parameter (page)
+  Scenario Outline: GET list user with valid page
     Given Get list user with page <Parameter>
     When Send request get list user
     Then API should return response 200 OK
@@ -9,11 +9,11 @@ Feature: Request to API Reqres.in
     And Get list user assert json validation
   Examples:
       |Id|Parameter|Firstname|Lastname|Email|
-      |3|1        |Emma     |Wong   |emma.wong@reqres.in|
-      |9|2        |Tobias  |Funke  |tobias.funke@reqres.in|
+      |3 |1        |Emma     |Wong   |emma.wong@reqres.in|
+      |9 |2        |Tobias   |Funke  |tobias.funke@reqres.in|
 
   @Latihan @PositiveCase
-  Scenario: GET list user with valid parameter (page) (without outline scenario)
+  Scenario: GET list user with valid page
     Given Get list user with page 1
     When Send request get list user
     Then API should return response 200 OK
@@ -22,7 +22,7 @@ Feature: Request to API Reqres.in
     And Get list user assert json validation
 
   @Tugas @NegativeCase
-  Scenario: GET list user with invalid parameter (page)
+  Scenario: GET list user with invalid page
     Given Get list user with page "ad"
     When Send request get list user
     Then API should return response 404 Not Found
@@ -46,9 +46,9 @@ Feature: Request to API Reqres.in
     Then API should return response 404 Not Found
     Examples:
       |id|
-      |300 |
-      |#!a |
-      |    |
+      |300|
+      |#!a|
+      |   |
 
   @Tugas @NegativeCase
   Scenario: GET list user not found
@@ -57,7 +57,7 @@ Feature: Request to API Reqres.in
     Then API should return response 404 Not Found
 
   @Tugas @NegativeCase
-  Scenario: POST create user with invalid credential (without outline scenario)
+  Scenario: POST create user with invalid credential
     Given Post create new user with invalid json file
     When Send request post create user
     Then API should return response 400 BAD REQUEST
@@ -74,7 +74,7 @@ Feature: Request to API Reqres.in
     |Luqman Hanung |Software QA Engineer|
 
   @Tugas @PositiveCase
-  Scenario: GET list Resource with valid parameter
+  Scenario: GET list Resource with valid page
     Given get list resource with valid page 2
     When Send request get list resources
     Then API should return response 200 OK
@@ -82,7 +82,7 @@ Feature: Request to API Reqres.in
     And Get list resource assert json validation
 
   @Tugas @PositiveCase
-  Scenario Outline: GET list Resource with valid parameter
+  Scenario Outline: GET list Resource with valid page
     Given get list resource with valid page 2
     When Send request get list resources
     Then API should return response 200 OK
@@ -99,7 +99,7 @@ Feature: Request to API Reqres.in
     Then API should return response 404 Not Found
 
   @Tugas @NegativeCase
-  Scenario: GET list Resource with invalid parameter
+  Scenario: GET list Resource with invalid page
     Given get list resource with invalid page "#@!"
     When Send request get list resources
     Then API should return response 404 Not Found
@@ -123,9 +123,9 @@ Feature: Request to API Reqres.in
     Then API should return response 404 Not Found
     Examples:
       |id|
-      |300 |
-      |@#$ |
-      |    |
+      |300|
+      |@#$|
+      |   |
 
   @Tugas @PositiveCase
   Scenario: Register-successful
@@ -160,29 +160,36 @@ Feature: Request to API Reqres.in
     And Post register and login user error message missing password assert json validation
 
   @Tugas @PositiveCase
-  Scenario Outline: GET single list user with valid parameter (delay)
-    Given Get list user with delay <parameter>
-    When Send request get single user with delay
-    Then API should return response status code <status code>
+  Scenario Outline: GET single list user with predetermined time delay
+    Given Get list user with time delay <delay> second
+    When Send request get list users with delay
+    Then API should return response status code 200
+    And Get list user assert json validation
   Examples:
-    |parameter|status code|
-    |3        |200        |
-    |30       |503        |
-    |32       |200        |
+    |delay|
+    |3    |
+    |10   |
+    |32   |
+
+  @Tugas @PositiveCase
+  Scenario: GET single list user with maximum time delay
+    Given Get list user with time delay 30 second
+    When Send request get list users with delay
+    Then API should return response status code 503 Service Unavailable
 
   @Tugas @NegativeCase
   Scenario Outline: PUT Update user with invalid id
     Given Put update user with invalid id "<id>" and with valid json file
     When Send request put update user
-    Then API should return response 404 Not Found
+    Then API should return response 400 BAD REQUEST
   Examples:
     |id|
-    |@! |
-    |sd |
-    |   |
+    |@!|
+    |sd|
+    |  |
 
   @Latihan @PositiveCase
-  Scenario: PUT Update user (without outline scenario)
+  Scenario: PUT Update user with valid Json File
     Given Put update user with id 1 and with valid json file
     When Send request put update user
     Then API should return response 200 OK
@@ -190,23 +197,34 @@ Feature: Request to API Reqres.in
     And Put update user assert json validation
 
   @Tugas @NegativeCase
-    Scenario: PUT update user without valid json file
+    Scenario: PUT update user without valid Json File
     Given Put update user with id 1 and without valid json file
     When Send request put update user
     Then API should return response 400 BAD REQUEST
 
   @Tugas @NegativeCase
-  Scenario: PUT update user with invalid json file
+  Scenario: PUT update user with invalid Json File
     Given Put update user with id 1 and with invalid json file
     When Send request put update user
     Then API should return response 400 BAD REQUEST
 
   @Tugas @PositiveCase
-  Scenario: PATCH Update user (without outline scenario)
+  Scenario: PATCH Update user with valid id
     Given Patch update user with id 1 and with valid json file
     When Send request patch update user
     Then API should return response 200 OK
     And Patch Response body should contain name "Justin Bieber"
+    And Patch update user assert json validation
+
+  @Tugas @NegativeCase
+  Scenario Outline: PATCH Update user with invalid id
+    Given Patch update user with id "<id>" and with valid json file
+    When Send request patch update user
+    Then API should return response 400 BAD REQUEST
+  Examples:
+    |id|
+    |sS5|
+    |$@2|
 
   @Latihan @PositiveCase
   Scenario Outline: DELETE user With valid id
@@ -222,11 +240,12 @@ Feature: Request to API Reqres.in
   Scenario Outline: DELETE user With invalid id
     Given Delete user with id "<id>"
     When Send request delete user
-    Then API should return response 404 Not Found
+    Then API should return response 400 BAD REQUEST
     Examples:
       |id|
-      |400 |
-      |EWQ# |
-      |     |
+      |40E|
+      |EWQ#|
+      |    |
+
 
 

@@ -72,7 +72,7 @@ public class ReqresAPI {
     }
 
     @Step("Post create user")
-    public void postCreateUser(File jsonFile){
+    public void postCreateRegisterLoginUser(File jsonFile){
         SerenityRest.given()
                 .contentType(ContentType.JSON)
                 .body(jsonFile);
@@ -86,8 +86,8 @@ public class ReqresAPI {
                 .body(jsonFile);
     }
 
-    @Step("Put update user (String id)")
-    public void putUpdateUser(File jsonFile, String id){
+    @Step("Put update user string id")
+    public void putUpdateUserStringId(File jsonFile, String id){
         SerenityRest.given()
                 .pathParam("id", id)
                 .contentType(ContentType.JSON)
@@ -101,21 +101,28 @@ public class ReqresAPI {
                 .contentType(ContentType.JSON);
     }
 
-    @Step("Patch update user")
-    public void patchUpdateUser(File jsonFile, int id){
+    @Step("Patch update user int id")
+    public void patchUpdateUserIdInt(File jsonFile, int id){
+        SerenityRest.given()
+                .pathParam("id", id)
+                .contentType(ContentType.JSON)
+                .body(jsonFile);
+    }
+    @Step("Patch update user string id ")
+    public void patchUpdateUserIdString(File jsonFile, String id){
         SerenityRest.given()
                 .pathParam("id", id)
                 .contentType(ContentType.JSON)
                 .body(jsonFile);
     }
 
-    @Step("Delete user")
-    public void deleteUser(int id){
+    @Step("Delete user int id")
+    public void deleteUserIntId(int id){
         SerenityRest.given()
                 .pathParam("id", id);
     }
     @Step("Delete user String id")
-    public void deleteUser(String id){
+    public void deleteUserStringId(String id){
         SerenityRest.given()
                 .pathParam("id", id);
     }

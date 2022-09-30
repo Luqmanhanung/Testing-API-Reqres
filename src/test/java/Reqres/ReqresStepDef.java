@@ -10,7 +10,7 @@ import java.io.File;
 import static org.hamcrest.Matchers.equalTo;
 import io.restassured.module.jsv.JsonSchemaValidator;
 
-public class ReqresStepDefs {
+public class ReqresStepDef {
     @Steps
     ReqresAPI reqresAPI;
 
@@ -32,7 +32,6 @@ public class ReqresStepDefs {
     public void sendRequestGetListUser() {
         SerenityRest.when()
                 .get(ReqresAPI.GET_LIST_USERS);
-
     }
 
     @When("Send request get single user")
@@ -50,7 +49,7 @@ public class ReqresStepDefs {
     @And("Response body should contain id {int}, firstname {string}, lastname {string} and email {string}")
     public void responseBodyShouldContainFirstnameAndLastname(int id, String firstname, String lastname, String email) {
         SerenityRest.then()
-                .body(ReqresResponse.IDLISTUSER,equalTo(id))
+                .body(ReqresResponse.ID_LIST_USER,equalTo(id))
                 .body(ReqresResponse.FIRST_NAME,equalTo(firstname))
                 .body(ReqresResponse.LAST_NAME,equalTo(lastname))
                 .body(ReqresResponse.EMAIL,equalTo(email));
@@ -65,13 +64,13 @@ public class ReqresStepDefs {
     @Given("Post create new user with valid json file")
     public void postCreateNewUserWithValidJsonFile() {
         File jsonFiles = new File(ReqresAPI.JSON_FILE+"/RequestBody/ValidCreateUser.json");
-        reqresAPI.postCreateUser(jsonFiles);
+        reqresAPI.postCreateRegisterLoginUser(jsonFiles);
     }
 
     @Given("Post create new user with invalid json file")
     public void postCreateNewUserWithInvalidJsonFile() {
         File jsonFiles = new File(ReqresAPI.JSON_FILE+"/RequestBody/InvalidCreateUser.json");
-        reqresAPI.postCreateUser(jsonFiles);
+        reqresAPI.postCreateRegisterLoginUser(jsonFiles);
     }
 
     @When("Send request post create user")
@@ -131,20 +130,28 @@ public class ReqresStepDefs {
                 .get(ReqresAPI.GET_SINGLE_RESOURCE);
     }
 
+    @Then("Response body should contain name {string}, color {string}, and pantone_value {string}")
+    public void responseBodyShouldContainNameColorAndPantone_value(String name, String color, String pantoneValue) {
+        SerenityRest.then()
+                .body(ReqresResponse.NAME_LIST_RESOURCES,equalTo(name))
+                .body(ReqresResponse.COLOR,equalTo(color))
+                .body(ReqresResponse.PANTONE_VALUE,equalTo(pantoneValue));
+    }
+
     @Then("Response body should contain id {int}, name {string}, year {int}, color {string}, and pantone_value {string}")
     public void responseBodyShouldContainIdNameYearColorAndPantone_value(int id, String name, int year, String color, String pantoneValue) {
         SerenityRest.then()
-                .body(ReqresResponse.IDLISTRESOURCES,equalTo(id))
-                .body(ReqresResponse.NAMELISTRESOURCES,equalTo(name))
-                .body(ReqresResponse.YEARLISTRESOUCES,equalTo(year))
+                .body(ReqresResponse.ID_LIST_RESOURCES,equalTo(id))
+                .body(ReqresResponse.NAME_LIST_RESOURCES,equalTo(name))
+                .body(ReqresResponse.YEAR_LIST_RESOURCES,equalTo(year))
                 .body(ReqresResponse.COLOR,equalTo(color))
-                .body(ReqresResponse.PANTONEVALUE,equalTo(pantoneValue));
+                .body(ReqresResponse.PANTONE_VALUE,equalTo(pantoneValue));
     }
 
     @Given("register new user with valid json file")
     public void registerNewUserWithValidJsonFile() {
         File jsonFiles = new File(ReqresAPI.JSON_FILE+"/RequestBody/RegisterUserSuccessful.json");
-        reqresAPI.postCreateUser(jsonFiles);
+        reqresAPI.postCreateRegisterLoginUser(jsonFiles);
     }
 
     @When("When Send request post register user")
@@ -156,14 +163,14 @@ public class ReqresStepDefs {
     @And("Response body should contain id {int} and token {string}")
     public void responseBodyShouldContainIdAndToken(int id, String token) {
         SerenityRest.then()
-                .body(ReqresResponse.IDREGISTER,equalTo(id))
-                .body(ReqresResponse.TOKENREGISTER,equalTo(token));
+                .body(ReqresResponse.ID_REGISTER,equalTo(id))
+                .body(ReqresResponse.TOKEN_REGISTER,equalTo(token));
     }
 
     @Given("register new user with invalid json file")
     public void registerNewUserWithInvalidJsonFile() {
         File jsonFiles = new File(ReqresAPI.JSON_FILE+"/RequestBody/RegisterUserUnsuccessful.json");
-        reqresAPI.postCreateUser(jsonFiles);
+        reqresAPI.postCreateRegisterLoginUser(jsonFiles);
     }
 
     @Then("API should return response {int} BAD REQUEST")
@@ -175,13 +182,13 @@ public class ReqresStepDefs {
     @And("Response body should contain error message {string}")
     public void responseBodyShouldContainErrorMessage(String errorMessage) {
         SerenityRest.then()
-                .body(ReqresResponse.ERRORMESSAGE,equalTo(errorMessage));
+                .body(ReqresResponse.ERROR_MESSAGE,equalTo(errorMessage));
     }
 
     @Given("login user with valid json file")
     public void loginUserWithValidJsonFile() {
         File jsonFiles = new File(ReqresAPI.JSON_FILE+"/RequestBody/LoginUserSuccessful.json");
-        reqresAPI.postCreateUser(jsonFiles);
+        reqresAPI.postCreateRegisterLoginUser(jsonFiles);
     }
 
     @When("Send request post login user")
@@ -193,17 +200,17 @@ public class ReqresStepDefs {
     @And("Response body should contain token {string}")
     public void responseBodyShouldContainToken(String token) {
         SerenityRest.then()
-                .body(ReqresResponse.TOKENLOGIN,equalTo(token));
+                .body(ReqresResponse.TOKEN_LOGIN,equalTo(token));
     }
 
     @Given("login user with invalid json file")
     public void loginUserWithInvalidJsonFile() {
         File jsonFiles = new File(ReqresAPI.JSON_FILE+"/RequestBody/LoginUserUnsuccessful.json");
-        reqresAPI.postCreateUser(jsonFiles);
+        reqresAPI.postCreateRegisterLoginUser(jsonFiles);
     }
 
-    @Given("Get list user with delay {int}")
-    public void getListUserWithDelayParameter(int delay) {
+    @Given("Get list user with time delay {int} second")
+    public void getListUserWithTimeDelayParameter(int delay) {
         reqresAPI.getListUserWithValidParameterDelay(delay);
     }
 
@@ -213,10 +220,15 @@ public class ReqresStepDefs {
                 .statusCode(statusCode);
     }
 
-    @When("Send request get single user with delay")
+    @When("Send request get list users with delay")
     public void sendRequestGetSingleUserWithDelay() {
         SerenityRest.when()
                 .get(ReqresAPI.GET_LIST_USERS_WITH_DELAY);
+    }
+    @Then("API should return response status code {int} Service Unavailable")
+    public void apiShouldReturnResponseStatusCodeServiceUnavailable(int statusCodeServiceUnavailable) {
+        SerenityRest.then()
+                .statusCode(statusCodeServiceUnavailable);
     }
 
     @Given("Put update user with id {int} and with valid json file")
@@ -227,7 +239,7 @@ public class ReqresStepDefs {
     @Given("Put update user with invalid id {string} and with valid json file")
     public void putUpdateUserWithInvalidIdIdAndWithValidJsonFile(String id) {
         File jsonFiles = new File(ReqresAPI.JSON_FILE+"/RequestBody/ValidPutUpdateUser.json");
-        reqresAPI.putUpdateUser(jsonFiles,id);
+        reqresAPI.putUpdateUserStringId(jsonFiles,id);
     }
 
     @Given("Put update user with id {int} and without valid json file")
@@ -249,8 +261,8 @@ public class ReqresStepDefs {
 
     @Given("Patch update user with id {int} and with valid json file")
     public void patchUpdateUserWithIdAndWithValidJsonFile(int id) {
-        File jsonFile = new File(ReqresAPI.JSON_FILE+"/RequestBody/PatchUser.json");
-        reqresAPI.patchUpdateUser(jsonFile,id);
+        File jsonFile = new File(ReqresAPI.JSON_FILE+"/RequestBody/PatchUpdateNameUser.json");
+        reqresAPI.patchUpdateUserIdInt(jsonFile,id);
     }
 
     @When("Send request patch update user")
@@ -265,13 +277,19 @@ public class ReqresStepDefs {
                 .body(ReqresResponse.NAME,equalTo(name));
     }
 
+    @Given("Patch update user with id {string} and with valid json file")
+    public void patchUpdateUserWithIdAndWithValidJsonFile(String id) {
+        File jsonFile = new File(ReqresAPI.JSON_FILE+"/RequestBody/PatchUpdateNameUser.json");
+        reqresAPI.patchUpdateUserIdString(jsonFile,id);
+    }
+
     @Given("Delete user with id {int}")
     public void deleteUserWithIdIdInt(int id) {
-        reqresAPI.deleteUser(id);
+        reqresAPI.deleteUserIntId(id);
     }
     @Given("Delete user with id {string}")
     public void deleteUserWithIdIdString(String id) {
-        reqresAPI.deleteUser(id);
+        reqresAPI.deleteUserStringId(id);
     }
 
     @When("Send request delete user")
@@ -329,7 +347,7 @@ public class ReqresStepDefs {
 
     @And("Put update user assert json validation")
     public void putUpdateUserAssertJsonValidation() {
-        File jsonFile = new File(ReqresAPI.JSON_FILE+"/JsonSchemaValidation/UpdateUserJsonSchemaValidation.json");
+        File jsonFile = new File(ReqresAPI.JSON_FILE+"/JsonSchemaValidation/PutUpdateUserJsonSchemaValidation.json");
         SerenityRest.then()
                 .assertThat()
                 .body(JsonSchemaValidator.matchesJsonSchema(jsonFile));
@@ -347,7 +365,7 @@ public class ReqresStepDefs {
     @And("Response body should contain id {int}")
     public void responseBodyShouldContainIdId(int id) {
         SerenityRest.then()
-                .body(ReqresResponse.IDSINGLEUSER,equalTo(id));
+                .body(ReqresResponse.ID_SINGLE_USER,equalTo(id));
     }
 
     @And("Get single user assert json validation")
@@ -357,7 +375,6 @@ public class ReqresStepDefs {
                 .assertThat()
                 .body(JsonSchemaValidator.matchesJsonSchema(jsonFile));
     }
-
 
     @Given("Get single resource with id {int}")
     public void getSingleResourceWithIdId(int id) {
@@ -377,11 +394,13 @@ public class ReqresStepDefs {
                 .body(JsonSchemaValidator.matchesJsonSchema(jsonFile));
     }
 
-    @Then("Response body should contain name {string}, color {string}, and pantone_value {string}")
-    public void responseBodyShouldContainNameColorAndPantone_value(String name, String color, String pantoneValue) {
+    @And("Patch update user assert json validation")
+    public void patchUpdateUserAssertJsonValidation() {
+        File jsonFile = new File(ReqresAPI.JSON_FILE+"/JsonSchemaValidation/PatchUpdateUserJsonSchemaValidation.json");
         SerenityRest.then()
-                .body(ReqresResponse.NAMELISTRESOURCES,equalTo(name))
-                .body(ReqresResponse.COLOR,equalTo(color))
-                .body(ReqresResponse.PANTONEVALUE,equalTo(pantoneValue));
+                .assertThat()
+                .body(JsonSchemaValidator.matchesJsonSchema(jsonFile));
     }
+
+
 }
