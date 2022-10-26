@@ -1,0 +1,261 @@
+Postman Collection,,https://www.getpostman.com/collections/628dd92f664da9eff635,,,,,,,,
+Postman environment,,reqres,,,,,,,,
+Base URL,,https://reqres.in,,,,,,,,
+Lampiran,,https://www.getpostman.com/collections/628dd92f664da9eff635,,,,,,,,
+,,,,,,,,,,
+Test ID,Scenario,Type,Case,Pre Condition,Steps,Expected Result,Actual Result,Status,Remark,Test Date
+TC1, Get list user,( + ),Get list user without parameter,"1. No authentication is needed
+2. Set Method GET","1. Set path to ""/api/users""
+2. Click send button","1. API should return response 200 OK
+2. API should return body page 1",as expected,PASS,,30-07-2022
+TC2,,( + ),Get list user with parameter,,"1. Set path with parameter to ""/api/users?page=3""
+2. Click send button","1. API should return response 200 OK
+2. API should return body page 3",as expected,PASS,,
+TC3,,( + ),Get list user with valid path,,"1. Set path to ""/api/users""
+2. Click send button","1. API should return response 200 OK
+2. API should return body page 1",as expected,PASS,,
+TC4,,( - ),"Get list user with invalid
+parameter",,"1. Set path invalid parameter to ""/api/users?pg=fh""
+2. Click send button","API should return response 404 Not found
+","1. API return status code 200
+2. API return body page 1",FAIL,,
+TC5,,( - ),Get list user with invalid path,,"1. Set path to ""/api/users$!@!""
+2. Click send button","API should return response 404 Not found
+","1. API return status code 200
+2. API return body page 1",FAIL,,
+TC6,Get single user,( + ),Get single user with valid user id {{id}},"1. No authentication is needed
+2. Set Method GET","1. Set path to ""/api/users/{{id}}""
+2. Click send button","1. API should return response 200 OK
+2. API should return body data user id {id}",as expected,PASS,{{id}} : 5,
+TC7,,( - ),Get single user with invalid user id {{id}},,"1. Set path to ""/api/users/{{id}}""
+2. Click send button","API should return response 404 Not found
+",as expected,PASS,{{id}} : !$!#$#@,
+TC8,,( - ),Get unregistered user,,"1. Set path to ""/api/users/50""
+2. Click send button","API should return response 404 Not found
+",as expected,PASS,,
+TC9,,( + ),Get single user with valid path,,"1. Set path to ""/api/users/{{id}}""
+2. Click send button","1. API should return response 200 OK
+2. API should return body data user id {id}","1. API return status code 200
+2. API return body data user id 2",PASS,{{id}} : 2,
+TC10,,( - ),Get single user with invalid path,,"1. Set path to ""/api/use##$@/{{id}}""
+2. Click send button","API should return response 404 Not found
+","1. API return status code 200
+2. API return body data user id 5",FAIL,{{id}} : 5,
+TC11,,( + ),"Get single user with user id {{id}} 
+exceeding the amount of existing data","1. No authentication is needed 
+2. Set Method GET
+3. Exist data of user is 12","1. Set path to ""/api/users/{{id}}""
+2. Click send button","API should return response 404 Not found
+",as expected,PASS,{{id}} : 30,
+TC12,Create new user,( + ),Create new user with valid data,"1. No authentication is needed
+2. Set Method POST","1. Set path to ""/api/users""
+2. Set request body {{payload}}
+3. Click send button","1. API should return response 201 Created
+2. API should return body data name and job equal to {{payload}}",as expected,PASS,"{{Payload}}:
+{
+    ""name"": ""Luqman"",
+    ""job"": ""QA""
+}",
+TC13,,( + ),Create new user with new body data,,"1. Set path to ""/api/users""
+2. Set request body {{payload}}
+3. Click send button","1. API should return response 201 Created
+2. API should return body data nama and pekerjaan equal to {{payload}}",as expected,PASS,"{{Payload}}:
+{
+    ""nama"": ""Luqman"",
+    ""Pekerjaan"": ""QA""
+}",
+TC14,,( + ),Create new user with only one data,,"1. Set path to ""/api/users""
+2. Set request body {{payload}}
+3. Click send button","1. API should return response 201 Created
+2. API should return body data name equal to {{payload}}",as expected,PASS,"{{Payload}}:
+{
+    ""nama"": ""Luqman""
+}",
+TC15,,( + ),Create new user without data,,"1. Set path to ""/api/users""
+2. Click send button","1. API should return response 201 Created
+2. API should return body data new id",as expected,PASS,,
+TC16,,( + ),Create new user with valid path,,"1. Set path to ""/api/users""
+2. Set request body {{payload}}
+3. Click send button","1. API should return response 201 Created
+2. API should return body data name and job equal to {{payload}}",as expected,PASS,"{{Payload}}:
+{
+    ""name"": ""Budi"",
+    ""job"": ""UI/UX Desaigner""
+}",
+TC17,,( - ),create new user with invalid path,,"1. Set path to ""/api/users#@#$""
+2. Click send button","API should return response 404 Not found
+",API return body data new user with new id,FAIL,,
+TC18,Update user,( + ),Update user with Valid path and Valid user id,"1. No authentication is needed
+2. Set Method PUT","1. Set path to ""/api/users/2""
+2. Set request body {{payload}}
+3. Click send button","1. API should return response 200 OK
+2. API should return body contains name, job and updatedAt",as expected,PASS,"{{Payload}}:
+{
+    ""name"": ""Luqman Hanung"",
+    ""job"": ""QA Engineer""
+}",
+TC19,,( - ),Update user with valid path and invalid user id,,"1. Set path to ""/api/users/$!$@!""
+2. Set request body {{payload}}
+3. Click send button","API should return response 404 Not found
+","1. API should return response 200 OK
+2. API should return body data name, job equal to {{payload}} and updatedAt",FAIL,"{{Payload}}:
+{
+    ""name"": ""Luqman Hanung"",
+    ""job"": ""QA Engineer""
+}",
+TC20,,( - ),Update user with Invalid path and valid user id,,"1. Set path to ""/api/users#$!@/4""
+2. Set request body {{payload}}
+3. Click send button","1. API should return response 404 Not found
+2. API Should return body with format HTML",as expected,PASS,"{{Payload}}:
+{
+    ""name"": ""Luqman Hanung"",
+    ""job"": ""QA Engineer""
+}",
+TC21,,( - ),Update user without user id,,"1. Set path to ""/api/users/""
+2. Set request body {{payload}}
+3. Click send button","API should return response 404 Not found
+","1. API should return response 200 OK
+2. API should return body data name, job equal to {{payload}} and updatedAt",FAIL,"{{Payload}}:
+{
+    ""name"": ""Luqman Hanung"",
+    ""job"": ""QA Engineer""
+}",
+TC22,,( - ),Update user with Invalid path and invalid user id,,"1. Set path to ""/api/users@$#33/@#$#@""
+2. Set request body {{payload}}
+3. Click send button","API should return response 404 Not found
+",as expected,PASS,"{{Payload}}:
+{
+    ""name"": ""Luqman Hanung"",
+    ""job"": ""QA Engineer""
+}",
+TC23,Delete user,( + ),Delete user with valid path and user id,"1. No authentication is needed
+2. Set Method DELETE","1. Set path to ""/api/users/2""
+2. Click send button",API should return response 204 No Content,as expected,PASS,,
+TC24,,( - ),Delete user with Invalid path and valid user id,,"1. Set path to ""/api/users$!$/2""
+2. Click send button","API should return response 404 Not found
+",API should return response 204 No Content,FAIL,,
+TC25,,( - ),Delete user with Valid path and Invalid user id,,"1. Set path to ""/api/users/#!@""
+2. Click send button","API should return response 404 Not found
+",API should return response 204 No Content,FAIL,,
+TC26,,( - ),Delete user with Invalid path and Invalid user id,,"1. Set path to ""/api/users$!!#$/#!@""
+2. Click send button","API should return response 404 Not found
+",API should return response 204 No Content,FAIL,,
+TC27,,( - ),Delete user without user id,,"1. Set path to ""/api/users/""
+2. Click send button","API should return response 404 Not found
+",API should return response 204 No Content,FAIL,,
+TC28,Get list <resources>,( + ),Get list <resources> without parameter,"1. No authentication is needed 
+2. Set Method GET","1. Set path to ""/api/unknown""
+2. Click send button","1. API should return response 200 OK
+2. API should return body page 1",as expected,PASS,,31 - 08 - 2022
+TC29,,( + ),Get list <resources> with parameter,,"1. Set path with parameter to ""/api/unknown?page=3""
+2. Click send button","1. API should return response 200 OK
+2. API should return body page 3",as expected,PASS,,
+TC30,,( + ),Get list <resources> with valid path,,"1. Set path to ""/api/unknown""
+2. Click send button","1. API should return response 200 OK
+2. API should return body page 1",as expected,PASS,,
+TC31,,( - ),"Get list <resources> with invalid
+parameter",,"1. Set path invalid parameter to ""/api/unknown?pg=fh""
+2. Click send button","API should return response 404 Not found
+","1. API return status code 200
+2. API return body page 1",FAIL,,
+TC32,,( - ),Get list <resources> with invalid path,,"1. Set path to ""/api/unknown$!@!""
+2. Click send button","API should return response 404 Not found
+","1. API return status code 200
+2. API return body page 1",FAIL,,
+TC33,Get single <resources>,( + ),Get single <resources> with valid user id {{id}},"1. No authentication is needed 
+2. Set Method GET","1. Set path to ""/api/unknown/{{id}}""
+2. Click send button","1. API should return response 200 OK
+2. API should return body data user id {id}",as expected,PASS,{{id}} : 5,
+TC34,,( - ),Get single <resources> with invalid user id {{id}},,"1. Set path to ""/api/unknown/{{id}}""
+2. Click send button","API should return response 404 Not found
+",as expected,PASS,{{id}} : !$!#$#@,
+TC35,,( - ),Get unregistered <resources>,,"1. Set path to ""/api/unknown/50""
+2. Click send button","API should return response 404 Not found
+",as expected,PASS,,
+TC36,,( + ),Get single <resources> with valid path,,"1. Set path to ""/api/unknown/{{id}}""
+2. Click send button","1. API should return response 200 OK
+2. API should return body data user id {id}","1. API return status code 200
+2. API return body data user id 2",PASS,{{id}} : 2,
+TC37,,( - ),Get single <resources> with invalid path,,"1. Set path to ""/api/unk##$@/{{id}}""
+2. Click send button","API should return response 404 Not found
+","1. API return status code 200
+2. API return body data user id 5",FAIL,{{id}} : 5,
+TC38,,( + ),"Get single <resources> with user id {{id}} 
+exceeding the amount of existing data","1. No authentication is needed 
+2. Set Method GET""
+3. Exist data of resources is 12
+
+
+
+
+
+","1. Set path to ""/api/unknown/{{id}}""
+2. Click send button","API should return response 404 Not found
+",as expected,PASS,{{id}} : 30,
+TC39,Register user,( + ),register new user with valid credentials - Succesful,"1. No authentication is needed 
+2. Set Method POST","1. Set path to ""/api/register""
+2. Set request body {{payload}}
+3. Click send button","1. API should return response 201 Created
+2. API should return body data id and token ",as expected,PASS,"{{Payload}}:
+{
+    ""email"": ""eve.holt@reqres.in"",
+    ""password"": ""pistol""
+}",
+TC40,,( - ),"register new user with invalid credentials (only 
+one data) - Unsuccesful",,"1. Set path to ""/api/register""
+2. Set request body {{payload}}
+3. Click send button","1. API should return response 400 Bad Request
+2. API should return body data message error ""Missing password""",as expected,PASS,"{{Payload}}:
+{
+    ""email"": ""eve.holt@reqres.in""
+}",
+TC41,,( - ),register new user with invalid path,,"1. Set path to ""/api/registereed""
+2. Set request body {{payload}}
+3. Click send button","API should return response 404 Not Found
+","""1. API should return response 201 Created
+2. API should return body data email, password equal to {{payload}}, id, CreatedAt""",FAIL,"{{Payload}}:
+{
+    ""email"": ""eve.holt@reqres.in"",
+    ""password"": ""pistol""
+}",
+TC42,Login user,( + ),Login user with valid credentials - Succesful,"1. No authentication is needed 
+2. Set Method POST","1. Set path to ""/api/login""
+2. Set request body {{payload}}
+3. Click send button","1. API should return response 201 Created
+2. API should return body data token ",as expected,PASS,"{{Payload}}:
+{
+    ""email"": ""eve.holt@reqres.in"",
+    ""password"": ""pistol""
+}",
+TC43,,( - ),"Login user with invalid credentials (only 
+one data) - Unsuccesful",,"1. Set path to ""/api/login""
+2. Set request body {{payload}}
+3. Click send button","1. API should return response 400 Bad Request
+2. API should return body data message error ""Missing password""",as expected,PASS,"{{Payload}}:
+{
+    ""email"": ""eve.holt@reqres.in""
+}",
+TC44,,( - ),Login user with invalid path,,"1. Set path to ""/api/logined""
+2. Set request body {{payload}}
+3. Click send button","API should return response 404 Not found
+","""1. API should return response 201 Created
+2. API should return body data email, password equal to {{payload}}, id, CreatedAt""",FAIL,"{{Payload}}:
+{
+    ""email"": ""eve.holt@reqres.in"",
+    ""password"": ""pistol""
+}",
+TC45,Delayed response,( + ),Check Delayed response for below 30 second,"1. No authentication is needed 
+2. Set Method GET","1. Set path with parameter to ""/api/users?delay=10""
+2. Click send button","1. API should return response 200 OK 
+2. Response time for 10 second
+3. API should return body page 1",as expected,PASS,,
+TC46,,( + ),Check Delayed response for 30 second,"1. No authentication is needed 
+2. Set Method GET","1. Set path with parameter to ""/api/users?delay=30""
+2. Click send button","1. API should return response 503 Service Unavailable
+2. response time for 30 second
+3. API should return body data with format HTML",as expected,PASS,,
+TC47,,( + ),Check Delayed response for above 30 second,"1. No authentication is needed 
+2. Set Method GET","1. Set path with parameter to ""/api/users?delay=35""
+2. Click send button","1. API should return response 200 OK
+2. Fast response time
+3. API should return body page 1",as expected,PASS,,
