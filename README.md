@@ -72,5 +72,5 @@
 [![GitHub](https://img.shields.io/badge/-Luqmanhanung-white?style=for-the-badge&logo=github&logoColor=black)](https://github.com/Luqmanhanung/)
 
 <h5>
-<p align="center">:copyright: 2022 | This Repository Built with :heart: from us</p>
+<p align="center">:copyright: 2022 | This Repository Built with :heart: from <a href="https://www.linkedin.com/in/luqman-hanung-asidiq/"> Luqmanhanung</a></p>
 </h5>
