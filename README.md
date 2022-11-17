@@ -4,7 +4,6 @@
   </a>
 
   <p align="center">
-    Capstone Program Immersive Alterra Academy
     <br />
     <a href="https://reqres.in/"><strong>| Open API Documentation |</strong></a>
     <br />
