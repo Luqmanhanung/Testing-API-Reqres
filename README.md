@@ -4,6 +4,7 @@
   </a>
 
   <p align="center">
+    API Automation Testing Project
     <br />
     <a href="https://reqres.in/"><strong>| Open API Documentation |</strong></a>
     <br />
